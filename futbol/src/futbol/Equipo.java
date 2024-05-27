@@ -59,15 +59,15 @@ public class Equipo {
 		int numeroNombre = (int)(Math.random()*(nombres.length));
 		int numeroCiudad = (int)(Math.random()*(ciudades.length));
 		Equipo equipo = new Equipo(nombres[numeroNombre], ciudades[numeroCiudad]);
-		int numeroJugadores = (int)(Math.random()*(15));
+		int numeroJugadores = (int)(Math.random()*(10)+5);
 		for (int i=0; i<numeroJugadores; i++) {
-			equipo.agregarJugador(Jugador.crearRandom(i));
+			equipo.agregarJugador(Jugador.crearRandom(i+1));
 		}
 		return equipo;
     }
 	
 	public String mostrarBasic() {
-		String result ="\"" + nombre + "\""+ "\nde " + ciudad;
+		String result ="\"" + nombre + "\""+ " de " + ciudad;
 		result+="\ntiene " + jugadores.size() + " jugadores";
 		return result;
     }

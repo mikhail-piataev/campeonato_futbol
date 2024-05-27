@@ -38,6 +38,11 @@ public class Jugador extends Persona{
 		this.posicion = posicion;
 	}
 	
+	@Override
+	public String toString() {
+		return numeroCamiseta + ". " + super.toString() + " - " + posicion;
+	}
+
 	public static Jugador crearRandom(int numeroCamiseta) {
 		int numeroPosition;
 		if (numeroCamiseta ==1) {

@@ -48,7 +48,7 @@ public class Persona {
 	
     @Override
 	public String toString() {
-		return  nombre + " " + apellido +" ("+ fechaNacimiento +")";
+		return  nombre + " " + apellido +" ("+ getEdad() +" años)";
 	}
 
 	public static Persona crearRandom() {
