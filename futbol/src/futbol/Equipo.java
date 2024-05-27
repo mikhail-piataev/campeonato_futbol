@@ -2,6 +2,8 @@ package futbol;
 
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 public class Equipo {
 	private String nombre;
 	private String ciudad;
@@ -52,7 +54,11 @@ public class Equipo {
 	}
 
 	public void agregarJugador(Jugador jugador) {
-		jugadores.add(jugador);
+		if (numeroOcupado(jugador.getNumeroCamiseta())) {
+			JOptionPane.showMessageDialog(null,"¡Error! ¡Este numero de camiseta ya está ocupado!");
+		} else {
+			jugadores.add(jugador);			
+		}
 	}
 	
 	public static Equipo crearRandom() {
@@ -84,5 +90,47 @@ public class Equipo {
 		String result = mostrarBasic() +":\n" + mostrarJugadores();
 		return result;
     }
+
+	public String[] toArrayString() {
+		if (jugadores.isEmpty()) {
+			return null; 
+		} 
+		String[] result = new String[jugadores.size()];
+  	    for(int i=0; i<jugadores.size(); i++) {
+			result[i]=jugadores.get(i).getNumeroCamiseta()+". "+jugadores.get(i).getNombre() +" "+jugadores.get(i).getApellido();
+  	    }
+	    return result;
+    }
+	
+	public boolean numeroOcupado(int numeroCamiseta) {
+		for(Jugador jugador:jugadores) {
+  				if (jugador.getNumeroCamiseta()==numeroCamiseta) {
+  					return true;
+  				}
+  	    }
+	    return false;
+    }
+
+	public Jugador encontrarJugador(int numeroCamiseta) {
+		for(Jugador jugador:jugadores) {
+				if (jugador.getNumeroCamiseta()==numeroCamiseta) {
+					return jugador;
+				}
+	    }
+		return null;
+	}
+
+	public void eliminarJugador(int numeroCamiseta) {
+		Jugador jugador=encontrarJugador(numeroCamiseta);
+		if (jugador== null) {
+			JOptionPane.showMessageDialog(null, "No hay jugador con este numero en equipo " + getNombre() );
+	    } else {
+	    	//JOptionPane.showOptionDialog	
+	    	if (JOptionPane.showConfirmDialog(null, "Eliminar jugador " + jugador + "?")==0) {
+	    		jugadores.remove(jugador);	
+	    	}
+	    	
+	    }
+	}
 	
 }

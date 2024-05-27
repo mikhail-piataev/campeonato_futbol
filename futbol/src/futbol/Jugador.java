@@ -54,5 +54,14 @@ public class Jugador extends Persona{
 		Persona chico=Persona.crearRandom();
     	return new Jugador(chico, numeroCamiseta, posicion);
     }
+	
+	public boolean tieneNombre(String nombre) {
+		return this.getNombre().equals(nombre);
+	}
 
+	public boolean tieneApellido(String apellido) {
+		return this.getApellido().equals(apellido);
+	}
+
+	
 }
