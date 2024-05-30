@@ -60,6 +60,19 @@ public class Equipo {
 			jugadores.add(jugador);			
 		}
 	}
+
+	public void agregarManualmente() {
+		int numero;
+		do {
+			numero=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingerese numero de camiseta. "
+					+ "\nYa están ocupado los numeros " + mostrarNumeros()));
+			if (numeroOcupado(numero)) {
+				JOptionPane.showMessageDialog(null,"¡Error! ¡Este numero de camiseta ya está ocupado!");
+			}
+		} while (numeroOcupado(numero));
+		Jugador jugador = Jugador.crearManualmente(numero);
+		jugadores.add(jugador);			
+	}
 	
 	public static Equipo crearRandom() {
 		int numeroNombre = (int)(Math.random()*(nombres.length));
@@ -109,6 +122,18 @@ public class Equipo {
   				}
   	    }
 	    return false;
+    }
+	
+	public String mostrarNumeros() {
+		String stringNumeros="";
+		for(int i=0; i<jugadores.size(); i++) {
+			stringNumeros+= jugadores.get(i).getNumeroCamiseta();
+			if (i<jugadores.size()-1) {
+				stringNumeros+=", "; 
+			}
+			
+  	    }
+	    return stringNumeros;
     }
 
 	public Jugador encontrarJugador(int numeroCamiseta) {

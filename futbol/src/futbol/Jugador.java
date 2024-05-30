@@ -2,6 +2,8 @@ package futbol;
 
 import java.time.LocalDate;
 
+import javax.swing.JOptionPane;
+
 public class Jugador extends Persona{
 	private int numeroCamiseta;
 	private String posicion;
@@ -52,6 +54,12 @@ public class Jugador extends Persona{
 		}
 		String posicion = posiciones[numeroPosition];
 		Persona chico=Persona.crearRandom();
+    	return new Jugador(chico, numeroCamiseta, posicion);
+    }
+
+	public static Jugador crearManualmente(int numeroCamiseta) {
+		Persona chico=Persona.crearManualmente();
+		String posicion = JOptionPane.showInputDialog(null, "Ingrese posición del jugador en el equipo ");;
     	return new Jugador(chico, numeroCamiseta, posicion);
     }
 	

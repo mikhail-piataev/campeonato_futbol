@@ -3,6 +3,8 @@ package futbol;
 import java.time.LocalDate;
 import java.time.Period;
 
+import javax.swing.JOptionPane;
+
 public class Persona {
 	private String nombre;
 	private String apellido;
@@ -58,4 +60,14 @@ public class Persona {
     	LocalDate fecha = LocalDate.now().minusYears(actualEdad).minusDays((int)(Math.random()*365));
     	return new Persona(nombres[numeroNombre], apellidos[numeroApellido], fecha);
     }
+	
+	public static Persona crearManualmente() {
+    	String nombre=JOptionPane.showInputDialog(null, "Ingrese el nombre");
+    	String apellido=JOptionPane.showInputDialog(null, "Ingrese el apellido");
+    	int ano =Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el año de nacimiento "));
+    	int mes =Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el mes de nacimiento "));
+    	int dia =Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el dia de nacimiento "));
+    	LocalDate fecha = LocalDate.of(ano, mes, dia);
+    	return new Persona(nombre, apellido, fecha);
+	}
 }
