@@ -2,13 +2,17 @@ package futbol;
 
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 public class Liga {
 	private String nombre;
 	private LinkedList<Equipo> equipos;
+	private LinkedList<Partido> partidos;
 
 	public Liga(String nombre) {
 		this.nombre = nombre;
 		equipos = new LinkedList<Equipo>();
+		partidos = new LinkedList<Partido>();
 	}
 
 	public String getNombre() {
@@ -21,6 +25,10 @@ public class Liga {
 	
 	public void agregarEquipo(Equipo equipo) {
 		equipos.add(equipo);
+	}
+	
+	public void agregarPartido(Partido partido) {
+		partidos.add(partido);
 	}
 	
 	public int getNumeroEquipos() {
@@ -50,8 +58,13 @@ public class Liga {
 	
 	public static Liga crearRandom(String nombre, int cantidadEquipos) {
 		Liga liga = new Liga(nombre);
-		for (int i=0; i<cantidadEquipos; i++) {
-			liga.agregarEquipo(Equipo.crearRandom());
+		int i=0; 
+		while (i<cantidadEquipos){
+			Equipo equipo=Equipo.crearRandom();
+			if (!liga.tieneEquipo(equipo)) {
+				liga.agregarEquipo(equipo);
+				i++;
+			}
 		}
 		return liga;
     }
@@ -69,14 +82,51 @@ public class Liga {
 	
 	public Equipo encontrarEquipo(String nombre) {
 		for(Equipo equipo:equipos) {
-				if (equipo.getNombre().equals(nombre)) {
-					return equipo;
-				}
+			if (equipo.getNombre().equals(nombre)) {
+				return equipo;
+			}
 	    }
 		return null;
+	}
+
+	public void agregarEquipoManualmente() {
+		Equipo equipo = Equipo.crearManualmante();
+		while (tieneEquipo(equipo.getNombre())) {
+			equipo.setNombre(JOptionPane.showInputDialog(null, "Liga " + getNombre() 
+			+ " ya tiene equipo " + equipo.getNombre()+".\nIngrese otro nombre."));
+		}
+		boolean unaMas;
+		do {
+			equipo.agregarJugadorManualmente();
+			unaMas = (JOptionPane.showConfirmDialog(null, "¿Querés agregar un hugador más?") == 0);
+		} while (unaMas);
+		JOptionPane.showMessageDialog(null, equipo.mostrarTodo());
+		agregarEquipo(equipo);		
+	}
+	
+	
+	public void eliminarEquipo(String nombre) {
+		Equipo equipo = encontrarEquipo(nombre);
+		if (equipo == null) {
+			JOptionPane.showMessageDialog(null, "No hay equipo " + nombre + " en liga " + getNombre() );
+		} else {
+			if (JOptionPane.showConfirmDialog(null, "Eliminar equipo " + nombre + "?")==0) {
+	    		equipos.remove(equipo);
+			}
+	    }
 	}
 	
 	public boolean tieneEquipo(String nombre) {
 		return !(encontrarEquipo(nombre)==null);
 	}
+	
+	public boolean tieneEquipo(Equipo equipo) {
+		return !(encontrarEquipo(equipo.getNombre())==null);
+	}
+
+	public void jugarPartido(Equipo primero, Equipo segundo) {
+		JOptionPane.showMessageDialog(null, "Un partido entre " + primero.getNombre() + " y " + segundo.getNombre());
+	}
+
+
 }

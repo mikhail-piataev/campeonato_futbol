@@ -23,7 +23,6 @@ public class Equipo {
 			"Isidro Casanova", "Las Heras", "Berazategui", "La Rioja"};
 
 	public Equipo(String nombre, String ciudad) {
-		super();
 		this.nombre = nombre;
 		this.ciudad = ciudad;
 		this.jugadores = new LinkedList<Jugador>();
@@ -61,7 +60,7 @@ public class Equipo {
 		}
 	}
 
-	public void agregarManualmente() {
+	public void agregarJugadorManualmente() {
 		int numero;
 		do {
 			numero=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingerese numero de camiseta. "
@@ -73,6 +72,16 @@ public class Equipo {
 		Jugador jugador = Jugador.crearManualmente(numero);
 		jugadores.add(jugador);			
 	}
+
+	public void eliminarJugadorManualmente() {
+		String[] options=toArrayString(); 
+		String elegido =(String)JOptionPane.showInputDialog(null, "Elige un jugador para eliminar", 
+				null, 1, null, options, options[0]);
+		//String[] elegidoSplit = elegido.split(". ");
+		int numero = Integer.parseInt(elegido.split(". ")[0]);
+		eliminarJugador(numero);		
+	}
+	
 	
 	public static Equipo crearRandom() {
 		int numeroNombre = (int)(Math.random()*(nombres.length));
@@ -83,6 +92,12 @@ public class Equipo {
 			equipo.agregarJugador(Jugador.crearRandom(i+1));
 		}
 		return equipo;
+    }
+
+	public static Equipo crearManualmante() {
+		String nombre = JOptionPane.showInputDialog(null, "Ingrese el nombre de equipo ");
+		String ciudad = JOptionPane.showInputDialog(null, "Ingrese la ciudad de equipo ");
+		return new Equipo(nombre,ciudad);
     }
 	
 	public String mostrarBasic() {
