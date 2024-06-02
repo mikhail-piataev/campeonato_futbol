@@ -7,12 +7,12 @@ import javax.swing.JOptionPane;
 public class Liga {
 	private String nombre;
 	private LinkedList<Equipo> equipos;
-	private LinkedList<Partido> partidos;
+	private LinkedList<String> resultados;
 
 	public Liga(String nombre) {
 		this.nombre = nombre;
 		equipos = new LinkedList<Equipo>();
-		partidos = new LinkedList<Partido>();
+		resultados = new LinkedList<String>();
 	}
 
 	public String getNombre() {
@@ -27,8 +27,8 @@ public class Liga {
 		equipos.add(equipo);
 	}
 	
-	public void agregarPartido(Partido partido) {
-		partidos.add(partido);
+	public void agregarResultado(String resultado) {
+		resultados.add(resultado);
 	}
 	
 	public int getNumeroEquipos() {
@@ -125,8 +125,27 @@ public class Liga {
 	}
 
 	public void jugarPartido(Equipo primero, Equipo segundo) {
-		JOptionPane.showMessageDialog(null, "Un partido entre " + primero.getNombre() + " y " + segundo.getNombre());
+		String resultado;
+		int gol1=(int)(Math.random()*5);
+		int gol2=(int)(Math.random()*5);
+		String puntuacion = primero.getNombre()+" " + gol1 + " - " + gol2 + " "+ segundo.getNombre();
+		if (gol1 == gol2) {
+			resultado = puntuacion + "\n¡Empate!";
+		} else if (gol1 > gol2) {
+			resultado=puntuacion + "\n¡Ganó " + primero.getNombre() + "!";
+		} else {
+			resultado=puntuacion + "\n¡Ganó " + segundo.getNombre() + "!";
+		}
+		JOptionPane.showMessageDialog(null, resultado);
+		agregarResultado(resultado);	
 	}
-
+	
+	public String mostrarResultados() {
+		String informe = "Resultados de los partidos en la Liga "+ getNombre() + ": \n\n";
+  	    for(String resultado:resultados) {
+			informe+= resultado +"\n\n";
+		}
+		return informe;
+    }
 
 }

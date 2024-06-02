@@ -5,22 +5,6 @@ import javax.swing.JOptionPane;
 public class Main {
 
 	public static void main(String[] args) {
-		//Persona chico = Persona.crearRandom();
-//		Equipo equipo = Equipo.crearRandom();
-		//JOptionPane.showMessageDialog(null, chico + " tiene "+ chico.getEdad() + " años.") ;
-		//JOptionPane.showMessageDialog(null, equipo.mostrarTodo());
-//		String[] options=equipo.toArrayString(); 
-//		String elegido =(String)JOptionPane.showInputDialog(null, "Elige un jugador para eliminar", null, 1, null, options, options[0]);
-//		String[] elegidoSplit=elegido.split(". ");
-//		int numero = Integer.parseInt(elegido.split(". ")[0]);
-//		JOptionPane.showMessageDialog(null, "Elegido numero " + numero);
-		//equipo.eliminarJugador(numero);
-		//equipo.agregarManualmente();
-//		JOptionPane.showMessageDialog(null, equipo.mostrarTodo());
-//		JOptionPane.showMessageDialog(null, liga.mostrarEquipos());
-//		String[] options=liga.toArrayString(); 
-//		String elegido =(String)JOptionPane.showInputDialog(null, "Elige un equipo para eliminar", null, 1, null, options, options[0]);
-		//JOptionPane.showMessageDialog(null, "Elegido " + elegido);
 		String[] mainMenu = {"Jugar partido", "Agregar equipo", "Eliminar equipo", "Agregar jugador", 
 				"Eliminar jugador", "Salir"};
 		Liga liga = Liga.crearRandom("Agrentina jóvenes", 6);
@@ -69,9 +53,10 @@ public class Main {
 				break;
 			}	
 		} while (! salir);
+		JOptionPane.showMessageDialog(null,liga.mostrarResultados()+"¡Chao! ¡Nos vemos!");
 	}
 	
-	public static String[] eliminarDeArray(String[] todos, String excesivo) {
+	private static String[] eliminarDeArray(String[] todos, String excesivo) {
 		if (todos.length<2) {
 			return null;
 		}
