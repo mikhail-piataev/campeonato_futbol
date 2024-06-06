@@ -7,11 +7,13 @@ import javax.swing.JOptionPane;
 public class Liga {
 	private String nombre;
 	private LinkedList<Equipo> equipos;
+	private LinkedList<Partido> partidos;
 	private LinkedList<String> resultados;
 
 	public Liga(String nombre) {
 		this.nombre = nombre;
 		equipos = new LinkedList<Equipo>();
+		partidos = new LinkedList<Partido>();
 		resultados = new LinkedList<String>();
 	}
 
@@ -29,6 +31,10 @@ public class Liga {
 	
 	public void agregarResultado(String resultado) {
 		resultados.add(resultado);
+	}
+
+	public void agregarPartido(Partido partido) {
+		partidos.add(partido);
 	}
 	
 	public int getNumeroEquipos() {
