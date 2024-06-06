@@ -63,10 +63,11 @@ public class Equipo {
 	public void agregarJugadorManualmente() {
 		int numero;
 		do {
+			String mensaje = (mostrarNumeros()=="") ? "Todavia no hay jugadores" : "\nYa están ocupado los numeros " + mostrarNumeros();
 			numero=Integer.parseInt(JOptionPane.showInputDialog(null, "Ingerese numero de camiseta. "
-					+ "\nYa están ocupado los numeros " + mostrarNumeros()));
+					+ mensaje));
 			if (numeroOcupado(numero)) {
-				JOptionPane.showMessageDialog(null,"¡Error! ¡Este numero de camiseta ya está ocupado!");
+				JOptionPane.showMessageDialog(null,"¡Este numero de camiseta ya está ocupado!", "¡Error!",2);
 			}
 		} while (numeroOcupado(numero));
 		Jugador jugador = Jugador.crearManualmente(numero);
