@@ -130,21 +130,21 @@ public class Liga {
 		return !(encontrarEquipo(equipo.getNombre())==null);
 	}
 
-	public void jugarPartido(Equipo primero, Equipo segundo) {
-		String resultado;
-		int gol1=(int)(Math.random()*5);
-		int gol2=(int)(Math.random()*5);
-		String puntuacion = primero.getNombre()+" " + gol1 + " - " + gol2 + " "+ segundo.getNombre();
-		if (gol1 == gol2) {
-			resultado = puntuacion + "\n¡Empate!";
-		} else if (gol1 > gol2) {
-			resultado=puntuacion + "\n¡Ganó " + primero.getNombre() + "!";
-		} else {
-			resultado=puntuacion + "\n¡Ganó " + segundo.getNombre() + "!";
-		}
-		JOptionPane.showMessageDialog(null, resultado);
-		agregarResultado(resultado);	
-	}
+//	public void jugarPartido(Equipo primero, Equipo segundo) {
+//		String resultado;
+//		int gol1=(int)(Math.random()*5);
+//		int gol2=(int)(Math.random()*5);
+//		String puntuacion = primero.getNombre()+" " + gol1 + " - " + gol2 + " "+ segundo.getNombre();
+//		if (gol1 == gol2) {
+//			resultado = puntuacion + "\n¡Empate!";
+//		} else if (gol1 > gol2) {
+//			resultado=puntuacion + "\n¡Ganó " + primero.getNombre() + "!";
+//		} else {
+//			resultado=puntuacion + "\n¡Ganó " + segundo.getNombre() + "!";
+//		}
+//		JOptionPane.showMessageDialog(null, resultado);
+//		agregarResultado(resultado);	
+//	}
 	
 	public String mostrarResultados() {
 		String informe = "Resultados de los partidos en la Liga "+ getNombre() + ": \n\n";

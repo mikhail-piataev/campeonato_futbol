@@ -69,11 +69,58 @@ public class Partido {
 		this.fecha = fecha;
 	}
 	
+	public Equipo jugar() {
+		Equipo ganador=null;
+		gol1=(int)(Math.random()*3);
+		gol2=(int)(Math.random()*3);
+		JOptionPane.showMessageDialog(null, "Primer periodo se termino con resultado\n"
+		+mostrarPuntuacion());
+		gol1+=(int)(Math.random()*3);
+		gol2+=(int)(Math.random()*3);
+		JOptionPane.showMessageDialog(null, "Segundo periodo se termino con resultado\n"
+		+mostrarPuntuacion());
+		
+		if (tipo==partidoEliminatoria && gol1==gol2) {
+			JOptionPane.showMessageDialog(null, "Va a jugar dos periodos extras");
+			gol1+=(int)(Math.random()*2);
+			gol2+=(int)(Math.random()*2);
+			JOptionPane.showMessageDialog(null, "Primer periodo extra se termino con resultado\n"
+			+mostrarPuntuacion());
+			gol1+=(int)(Math.random()*2);
+			gol2+=(int)(Math.random()*2);
+			JOptionPane.showMessageDialog(null, "Segundo periodo extra se termino con resultado\n"
+			+mostrarPuntuacion());
+		}
+		
+		if (tipo==partidoEliminatoria && gol1==gol2) {
+			JOptionPane.showMessageDialog(null, "Va a hacer penales");
+			gol1+=(int)(Math.random()*6);
+			gol2+=(int)(Math.random()*6);
+			JOptionPane.showMessageDialog(null, "Penales se termino con resultado\n"
+			+mostrarPuntuacion());			
+		}
+		if (tipo==partidoEliminatoria && gol1==gol2) {
+			JOptionPane.showMessageDialog(null, "Va a jugar gol de oro");
+			gol1+=(int)(Math.random()*6);
+			gol2+=(int)(Math.random()*6);
+			JOptionPane.showMessageDialog(null, "Penales se termino con resultado\n"
+			+mostrarPuntuacion());			
+		}
+		if (gol1 > gol2) {
+			ganador=equipo1;
+		} else if (gol1 < gol2){
+			ganador=equipo2;;
+		}
+		return ganador;
+	}
+
+	public String mostrarPuntuacion() {
+		return  equipo1.getNombre()+" " + gol1 + " - " + gol2 + " "+ equipo2.getNombre();
+	}
+	
 	public String mostrarResultado() {
 		String resultado;
-		int gol1=(int)(Math.random()*5);
-		int gol2=(int)(Math.random()*5);
-		String puntuacion = equipo1.getNombre()+" " + gol1 + " - " + gol2 + " "+ equipo2.getNombre();
+		String puntuacion = mostrarPuntuacion();
 		if (gol1 == gol2) {
 			resultado = puntuacion + "\n¡Empate!";
 		} else if (gol1 > gol2) {
@@ -84,6 +131,7 @@ public class Partido {
 		JOptionPane.showMessageDialog(null, resultado);
 		return resultado;
 	}
+	
 	
 	
 }
