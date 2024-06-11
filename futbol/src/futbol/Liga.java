@@ -8,13 +8,11 @@ public class Liga {
 	private String nombre;
 	private LinkedList<Equipo> equipos;
 	private LinkedList<Partido> partidos;
-	private LinkedList<String> resultados;
 
 	public Liga(String nombre) {
 		this.nombre = nombre;
 		equipos = new LinkedList<Equipo>();
 		partidos = new LinkedList<Partido>();
-		resultados = new LinkedList<String>();
 	}
 
 	public String getNombre() {
@@ -29,9 +27,6 @@ public class Liga {
 		equipos.add(equipo);
 	}
 	
-	public void agregarResultado(String resultado) {
-		resultados.add(resultado);
-	}
 
 	public void agregarPartido(Partido partido) {
 		partidos.add(partido);
@@ -39,6 +34,18 @@ public class Liga {
 	
 	public int getNumeroEquipos() {
 		return equipos.size();
+	}
+
+	public int getNumeroPartidos() {
+		return partidos.size();
+	}
+	
+	public LinkedList<Equipo> getEquipos() {
+		return equipos;
+	}
+
+	public void setEquipos(LinkedList<Equipo> equipos) {
+		this.equipos = equipos;
 	}
 
 	@Override
@@ -110,11 +117,10 @@ public class Liga {
 		agregarEquipo(equipo);		
 	}
 	
-	
 	public void eliminarEquipo(String nombre) {
 		Equipo equipo = encontrarEquipo(nombre);
 		if (equipo == null) {
-			JOptionPane.showMessageDialog(null, "No hay equipo " + nombre + " en liga " + getNombre() );
+			JOptionPane.showMessageDialog(null, "No hay equipo " + nombre + " en la liga " + getNombre() );
 		} else {
 			if (JOptionPane.showConfirmDialog(null, "Eliminar equipo " + nombre + "?")==0) {
 	    		equipos.remove(equipo);
@@ -129,27 +135,11 @@ public class Liga {
 	public boolean tieneEquipo(Equipo equipo) {
 		return !(encontrarEquipo(equipo.getNombre())==null);
 	}
-
-//	public void jugarPartido(Equipo primero, Equipo segundo) {
-//		String resultado;
-//		int gol1=(int)(Math.random()*5);
-//		int gol2=(int)(Math.random()*5);
-//		String puntuacion = primero.getNombre()+" " + gol1 + " - " + gol2 + " "+ segundo.getNombre();
-//		if (gol1 == gol2) {
-//			resultado = puntuacion + "\n¡Empate!";
-//		} else if (gol1 > gol2) {
-//			resultado=puntuacion + "\n¡Ganó " + primero.getNombre() + "!";
-//		} else {
-//			resultado=puntuacion + "\n¡Ganó " + segundo.getNombre() + "!";
-//		}
-//		JOptionPane.showMessageDialog(null, resultado);
-//		agregarResultado(resultado);	
-//	}
 	
 	public String mostrarResultados() {
-		String informe = "Resultados de los partidos en la Liga "+ getNombre() + ": \n\n";
-  	    for(String resultado:resultados) {
-			informe+= resultado +"\n\n";
+		String informe = "Resultados de los partidos en la liga \""+ getNombre() + "\": \n\n";
+  	    for(Partido partido:partidos) {
+			informe += partido.mostrarResultado() + "\n\n";
 		}
 		return informe;
     }

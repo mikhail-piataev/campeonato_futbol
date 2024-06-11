@@ -1,5 +1,7 @@
 package futbol;
 
+import java.time.LocalDate;
+
 import javax.swing.JOptionPane;
 
 public class Main {
@@ -7,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		String[] mainMenu = {"Jugar partido", "Agregar equipo", "Eliminar equipo", "Agregar jugador", 
 				"Eliminar jugador", "Salir"};
-		Liga liga = Liga.crearRandom("Agrentina jóvenes", 6);
+		Liga liga = Liga.crearRandom("Agrentina jóvenes", 8);
 		boolean salir = false;
 		do {
 			int acion=JOptionPane.showOptionDialog(null, "Por favor, elegí una opción", "Bienvenida a liga \"" 
@@ -21,12 +23,14 @@ public class Main {
 				nombresEquipos=eliminarDeArray(nombresEquipos, primero);
 				String segundo = (String)JOptionPane.showInputDialog(null, "Elegí el segundo equipo", 
 						"Un equipo rival para " + primero, 1, null, nombresEquipos, nombresEquipos[0]);
-				Partido partido = new Partido(liga.encontrarEquipo(primero), liga.encontrarEquipo(segundo));
+				Partido partido = new Partido(liga.encontrarEquipo(primero), liga.encontrarEquipo(segundo), 
+						LocalDate.now().plusDays(liga.getNumeroPartidos()));
+				partido.jugar(true);
+				JOptionPane.showMessageDialog(null, partido.mostrarResultado());
 				liga.agregarPartido(partido);
-				liga.agregarResultado(partido.mostrarResultado());
 				break;
 			case 1:
-				JOptionPane.showMessageDialog(null, liga.mostrarEquipos() + "\nVamos agregar una más.");
+				JOptionPane.showMessageDialog(null, liga.mostrarEquipos() + "\nVamos a agregar una más.");
 				liga.agregarEquipoManualmente();
 				JOptionPane.showMessageDialog(null, liga.mostrarEquipos());
 				break;
@@ -63,7 +67,7 @@ public class Main {
 			return null;
 		}
 		String[] sinExcesivo = new String[todos.length-1];
-		int salto=0;
+		int salto = 0 ;
 		for (int i=0; i<sinExcesivo.length; i++) {
 			if (todos[i].equals(excesivo)) {
 				salto=1;

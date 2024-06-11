@@ -12,15 +12,21 @@ public class Partido {
 	private int gol2;
 	private String fase;
 	private LocalDate fecha;
-	//private static String[] fases= {"Cuartos de final","semifinal", "final"};
-	public static int partidoRegular=1;
-	public static int partidoEliminatoria=2;
+	final public static int REGULAR=1;
+	final public static int ELIMINATORIO=2;
 
-	public Partido(Equipo equipo1, Equipo equipo2) {
+	public Partido(Equipo equipo1, Equipo equipo2, LocalDate fecha, int tipo, String fase) {
 		this.equipo1 = equipo1;
 		this.equipo2 = equipo2;
+		this.tipo = tipo;
+		this.fecha = fecha;
+		this.fase = fase;
 	}
 
+	public Partido(Equipo equipo1, Equipo equipo2, LocalDate fecha) {
+		this(equipo1, equipo2, fecha, REGULAR, "Partido amistoso");
+	}
+	
 	public Equipo getEquipo1() {
 		return equipo1;
 	}
@@ -69,43 +75,8 @@ public class Partido {
 		this.fecha = fecha;
 	}
 	
-	public Equipo jugar() {
+	public Equipo getGanador() {
 		Equipo ganador=null;
-		gol1=(int)(Math.random()*3);
-		gol2=(int)(Math.random()*3);
-		JOptionPane.showMessageDialog(null, "Primer periodo se termino con resultado\n"
-		+mostrarPuntuacion());
-		gol1+=(int)(Math.random()*3);
-		gol2+=(int)(Math.random()*3);
-		JOptionPane.showMessageDialog(null, "Segundo periodo se termino con resultado\n"
-		+mostrarPuntuacion());
-		
-		if (tipo==partidoEliminatoria && gol1==gol2) {
-			JOptionPane.showMessageDialog(null, "Va a jugar dos periodos extras");
-			gol1+=(int)(Math.random()*2);
-			gol2+=(int)(Math.random()*2);
-			JOptionPane.showMessageDialog(null, "Primer periodo extra se termino con resultado\n"
-			+mostrarPuntuacion());
-			gol1+=(int)(Math.random()*2);
-			gol2+=(int)(Math.random()*2);
-			JOptionPane.showMessageDialog(null, "Segundo periodo extra se termino con resultado\n"
-			+mostrarPuntuacion());
-		}
-		
-		if (tipo==partidoEliminatoria && gol1==gol2) {
-			JOptionPane.showMessageDialog(null, "Va a hacer penales");
-			gol1+=(int)(Math.random()*6);
-			gol2+=(int)(Math.random()*6);
-			JOptionPane.showMessageDialog(null, "Penales se termino con resultado\n"
-			+mostrarPuntuacion());			
-		}
-		if (tipo==partidoEliminatoria && gol1==gol2) {
-			JOptionPane.showMessageDialog(null, "Va a jugar gol de oro");
-			gol1+=(int)(Math.random()*6);
-			gol2+=(int)(Math.random()*6);
-			JOptionPane.showMessageDialog(null, "Penales se termino con resultado\n"
-			+mostrarPuntuacion());			
-		}
 		if (gol1 > gol2) {
 			ganador=equipo1;
 		} else if (gol1 < gol2){
@@ -113,25 +84,58 @@ public class Partido {
 		}
 		return ganador;
 	}
+	
+	private static void exhibir(boolean esVisible, String mensaje) {
+		if (esVisible) {
+ 		  JOptionPane.showMessageDialog(null, mensaje);
+		}
+	}
+	
+	public void jugar(boolean esVisible) {
+		gol1=(int)(Math.random()*3);
+		gol2=(int)(Math.random()*3);
+		exhibir(esVisible, "Primer periodo terminó con resultado\n" + mostrarPuntuacion());
+		gol1+=(int)(Math.random()*3);
+		gol2+=(int)(Math.random()*3);
+		exhibir(esVisible, "Segundo periodo terminó con resultado\n" + mostrarPuntuacion());
+		if (tipo == ELIMINATORIO && gol1 == gol2) {
+			exhibir(esVisible, "Van a jugar dos periodos extras");
+			gol1+=(int)(Math.random()*2);
+			gol2+=(int)(Math.random()*2);
+			exhibir(esVisible, "Primer periodo extra terminó con resultado\n" + mostrarPuntuacion());
+			gol1+=(int)(Math.random()*2);
+			gol2+=(int)(Math.random()*2);
+			exhibir(esVisible, "Segundo periodo extra terminó con resultado\n" + mostrarPuntuacion());
+		}
+		if (tipo == ELIMINATORIO && gol1 == gol2) {
+			exhibir(esVisible, "Habrá penales");
+			gol1+=(int)(Math.random()*6);
+			gol2+=(int)(Math.random()*6);
+			exhibir(esVisible, "Penales terminaron con resultado\n"+mostrarPuntuacion());			
+		}
+		if (tipo == ELIMINATORIO && gol1 == gol2) {
+			exhibir(esVisible, "Va a jugar \"gol de oro\"");
+			do {
+				gol1+=(int)(Math.random()*2);
+				gol2+=(int)(Math.random()*2);
+				exhibir(esVisible, "La ronda terminó con un resultado\n"+mostrarPuntuacion());
+			} while (gol1==gol2);
+		}
+	}
 
 	public String mostrarPuntuacion() {
-		return  equipo1.getNombre()+" " + gol1 + " - " + gol2 + " "+ equipo2.getNombre();
+		return equipo1.getNombre()+" " + gol1 + " - " + gol2 + " "+ equipo2.getNombre();
 	}
-	
+
+	public String mostrarFaseFechaYEquipos() {
+		return fase + ": " + fecha + ": " + equipo1.getNombre() + " - " + equipo2.getNombre();
+	}
+
 	public String mostrarResultado() {
-		String resultado;
-		String puntuacion = mostrarPuntuacion();
-		if (gol1 == gol2) {
-			resultado = puntuacion + "\n¡Empate!";
-		} else if (gol1 > gol2) {
-			resultado=puntuacion + "\n¡Ganó " + equipo1.getNombre() + "!";
-		} else {
-			resultado=puntuacion + "\n¡Ganó " + equipo2.getNombre() + "!";
-		}
-		JOptionPane.showMessageDialog(null, resultado);
+		String resultado = fase + " " + fecha + ":\n" + mostrarPuntuacion();
+		Equipo ganador = getGanador();
+		resultado += ganador  == null ? "\n¡Empate!" : "\n¡Ganó " + ganador.getNombre() + "!";
 		return resultado;
 	}
-	
-	
 	
 }
