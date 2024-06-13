@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		String[] mainMenu = {"Jugar partido", "Agregar equipo", "Eliminar equipo", "Agregar jugador", 
-				"Eliminar jugador", "Salir"};
+				"Eliminar jugador", "Campeonato", "Salir"};
 		Liga liga = Liga.crearRandom("Agrentina jóvenes", 8);
 		boolean salir = false;
 		do {
@@ -55,6 +55,16 @@ public class Main {
                 JOptionPane.showMessageDialog(null, liga.encontrarEquipo(eligido).mostrarJugadores());
 				break;
 			case 5:
+				Campeonate campeonato = new Campeonate("Argentina", LocalDate.now().plusDays(10), liga.getEquipos());
+				campeonato.ordenarAlAzar();
+				Partido partidoCampeonato;
+				do {
+				  partidoCampeonato = campeonato.getSiguiente();
+				  campeonato.jugarSiguiente();
+				  liga.agregarPartido(partidoCampeonato);
+				} while (partidoCampeonato != null);
+				break;
+			case 6:
 				salir = true;
 				break;
 			}	

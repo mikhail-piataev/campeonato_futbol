@@ -85,9 +85,9 @@ public class Partido {
 		return ganador;
 	}
 	
-	private static void exhibir(boolean esVisible, String mensaje) {
+	private void exhibir(boolean esVisible, String mensaje) {
 		if (esVisible) {
- 		  JOptionPane.showMessageDialog(null, mensaje);
+ 		  JOptionPane.showMessageDialog(null, mensaje, fase, 1);
 		}
 	}
 	
@@ -121,6 +121,7 @@ public class Partido {
 				exhibir(esVisible, "La ronda terminó con un resultado\n"+mostrarPuntuacion());
 			} while (gol1==gol2);
 		}
+		exhibir(esVisible, mostrarResultado());
 	}
 
 	public String mostrarPuntuacion() {
@@ -128,11 +129,11 @@ public class Partido {
 	}
 
 	public String mostrarFaseFechaYEquipos() {
-		return fase + ": " + fecha + ": " + equipo1.getNombre() + " - " + equipo2.getNombre();
+		return fase + " (" + fecha + "): " + equipo1.getNombre() + " - " + equipo2.getNombre();
 	}
 
 	public String mostrarResultado() {
-		String resultado = fase + " " + fecha + ":\n" + mostrarPuntuacion();
+		String resultado = fase + " (" + fecha + "):\n" + mostrarPuntuacion();
 		Equipo ganador = getGanador();
 		resultado += ganador  == null ? "\n¡Empate!" : "\n¡Ganó " + ganador.getNombre() + "!";
 		return resultado;

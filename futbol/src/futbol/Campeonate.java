@@ -126,9 +126,38 @@ public class Campeonate {
 		}
 	}
 	
-	public void jugarSeguinte() {
+	
+	public Partido getSiguiente() {
 		if (actual <= 4) {
-			cuartosDeFinal[actual-1].jugar(esVisible);
+			return cuartosDeFinal[actual-1];
+		} else if (actual <= 6) {
+			return semifinales[actual-5];
+		} else if (actual == 7) {
+			return elFinal;
+		} else {
+			return null;
+		}
+	}
+
+	
+	public Partido jugarSiguiente() {
+		Partido partido;
+		switch (actual) {
+		case 1: 
+			JOptionPane.showMessageDialog(null, mostrarEquiposCuartosDeFinal(), "Cuatros de finales", 1);
+			break;
+		case 5: 
+			JOptionPane.showMessageDialog(null, mostrarResultadosCuartosDeFinal(), "Resultados de cuatros de finales",1);
+			JOptionPane.showMessageDialog(null, mostrarEquiposSemifinales(), "Semifinales",1);
+			break;
+		case 7: 
+			JOptionPane.showMessageDialog(null, mostrarResultadosSemifinales(), "Resultados de semifinales",1);
+			JOptionPane.showMessageDialog(null, mostrarEquiposFinal(), "Final",1);
+			break;
+		}
+		if (actual <= 4) {
+			partido=cuartosDeFinal[actual-1];
+			partido.jugar(esVisible);
 			Equipo ganador = cuartosDeFinal[actual-1].getGanador();
 			if (actual % 2 != 0) {
 				equipo1 = ganador;
@@ -137,17 +166,23 @@ public class Campeonate {
 						Partido.ELIMINATORIO, "Semifinal " + (actual/2)); 
 			}
 		} else if (actual <= 6) {
-			semifinales[actual-5].jugar(esVisible);
+			partido=semifinales[actual-5];
+			partido.jugar(esVisible);
 			Equipo ganador = cuartosDeFinal[actual-5].getGanador();
 			if (actual % 2 != 0) {
 				equipo1 = ganador;
 			} else {
 				elFinal = new Partido(equipo1, ganador, inicio.plusDays(6), Partido.ELIMINATORIO, "Final"); 
 			}
+		} else if (actual == 7) {
+			partido=elFinal;
+			partido.jugar(esVisible);
+			JOptionPane.showMessageDialog(null, mostrarResultadosFinal(), "Resultados del Campionate",1);
 		} else {
-			elFinal.jugar(esVisible);
+			partido=null;
 		}
 		actual++;
+		return partido;
 	}
 
 	public String mostrarEquiposCuartosDeFinal () {
@@ -157,12 +192,41 @@ public class Campeonate {
 		}
 		return resultado;
 	}
-	
+
+
 	public String mostrarResultadosCuartosDeFinal () {
 		String resultado = "";
 		for (int i=0; i<4; i++) {
 			resultado+=cuartosDeFinal[i].mostrarResultado() + "\n\n";
 		}
 		return resultado;
-	}	
+	}
+	
+	public String mostrarEquiposSemifinales () {
+		String resultado = "";
+		for (int i=0; i<2; i++) {
+			resultado+=semifinales[i].mostrarFaseFechaYEquipos() + "\n";
+		}
+		return resultado;
+	}
+	
+	public String mostrarResultadosSemifinales () {
+		String resultado = "";
+		for (int i=0; i<2; i++) {
+			resultado+=semifinales[i].mostrarResultado() + "\n\n";
+		}
+		return resultado;
+	}
+	
+	public String mostrarEquiposFinal () {
+		String resultado = elFinal.mostrarFaseFechaYEquipos() + "\n";
+		return resultado;
+	}
+
+	public String mostrarResultadosFinal () {
+		String resultado = elFinal.mostrarResultado() + "\n";
+		return resultado;
+	}
+
+	
 }
