@@ -8,6 +8,7 @@ public class Equipo {
 	private String nombre;
 	private String ciudad;
 	private LinkedList<Jugador> jugadores;
+	private int rating;
 	
 	private static String[] nombres = {"Rayos del Horizonte", "Titanes de la Ciudad", "Águilas Doradas", 
 			"Centauros del Valle", "Lobos del Sur", "Dragones de Fuego", "Centinelas del Abismo", 
@@ -56,7 +57,8 @@ public class Equipo {
 		if (numeroOcupado(jugador.getNumeroCamiseta())) {
 			JOptionPane.showMessageDialog(null,"¡Error! ¡Este numero de camiseta ya está ocupado!");
 		} else {
-			jugadores.add(jugador);			
+			jugadores.add(jugador);
+			actualizarRatingEquipo();
 		}
 	}
 
@@ -71,7 +73,8 @@ public class Equipo {
 			}
 		} while (numeroOcupado(numero));
 		Jugador jugador = Jugador.crearManualmente(numero);
-		jugadores.add(jugador);			
+		jugadores.add(jugador);
+		actualizarRatingEquipo();
 	}
 
 	public void eliminarJugadorManualmente() {
@@ -80,7 +83,8 @@ public class Equipo {
 				null, 1, null, options, options[0]);
 		//String[] elegidoSplit = elegido.split(". ");
 		int numero = Integer.parseInt(elegido.split(". ")[0]);
-		eliminarJugador(numero);		
+		eliminarJugador(numero);
+		actualizarRatingEquipo();
 	}
 	
 	
@@ -166,12 +170,24 @@ public class Equipo {
 		if (jugador== null) {
 			JOptionPane.showMessageDialog(null, "No hay jugador con este numero en equipo " + getNombre() );
 	    } else {
-	    	//JOptionPane.showOptionDialog	
 	    	if (JOptionPane.showConfirmDialog(null, "Eliminar jugador " + jugador + "?")==0) {
-	    		jugadores.remove(jugador);	
+	    		jugadores.remove(jugador);
+	    		actualizarRatingEquipo();
 	    	}
 	    	
 	    }
 	}
+    
+	public int calcularPromedioRating() {
+        double totalRating = 0;
+        for (Jugador jugador : jugadores) {
+            totalRating += jugador.getRating();
+        }
+        return jugadores.isEmpty() ? 0 : (int)(totalRating / jugadores.size());
+    }
+    
+    private void actualizarRatingEquipo() {
+        rating=calcularPromedioRating();
+    }
 	
 }
