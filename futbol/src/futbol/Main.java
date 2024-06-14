@@ -23,7 +23,9 @@ public class Main {
 				campeonato.ordenarAlAzar();
 				do {
 			      partido = campeonato.getSiguiente();
-				  campeonato.jugarSiguiente(); // Por favor, no use simple jugar() para los partidos de Campeonato
+			      // сюда можно добавить функцию, например, totalizador.apostar(partido), которая будет предлагать сделать ставку  
+				  campeonato.jugarSiguiente(); 
+				  // а сюда, например, totalizador.resultadoApuesta(partido), которая выдаст результат ставки 
 				  if (partido != null) {
 					  liga.agregarPartido(partido);
 				  }
