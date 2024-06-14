@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
-public class Campeonate {
+public class Campeonato {
 	private int actual;
 	private String nombre;
 	private LocalDate inicio; 
@@ -15,7 +15,7 @@ public class Campeonate {
 	private Partido[] semifinales = new Partido[2];
 	private Partido[] cuartosDeFinal = new Partido[4];
 	
-	public Campeonate(String nombre, LocalDate inicio, LinkedList<Equipo> equipos) {
+	public Campeonato(String nombre, LocalDate inicio, LinkedList<Equipo> equipos) {
 		this.nombre = nombre;
 		this.inicio = inicio;
 		this.equipos = equipos;
@@ -140,8 +140,8 @@ public class Campeonate {
 	}
 
 	
-	public Partido jugarSiguiente() {
-		Partido partido;
+	public void jugarSiguiente() {
+		Equipo ganador;
 		switch (actual) {
 		case 1: 
 			JOptionPane.showMessageDialog(null, mostrarEquiposCuartosDeFinal(), "Cuatros de finales", 1);
@@ -156,9 +156,8 @@ public class Campeonate {
 			break;
 		}
 		if (actual <= 4) {
-			partido=cuartosDeFinal[actual-1];
-			partido.jugar(esVisible);
-			Equipo ganador = cuartosDeFinal[actual-1].getGanador();
+			cuartosDeFinal[actual-1].jugar(esVisible);
+			ganador = cuartosDeFinal[actual-1].getGanador();
 			if (actual % 2 != 0) {
 				equipo1 = ganador;
 			} else {
@@ -166,23 +165,18 @@ public class Campeonate {
 						Partido.ELIMINATORIO, "Semifinal " + (actual/2)); 
 			}
 		} else if (actual <= 6) {
-			partido=semifinales[actual-5];
-			partido.jugar(esVisible);
-			Equipo ganador = cuartosDeFinal[actual-5].getGanador();
+			semifinales[actual-5].jugar(esVisible);
+			ganador = semifinales[actual-5].getGanador();
 			if (actual % 2 != 0) {
 				equipo1 = ganador;
 			} else {
 				elFinal = new Partido(equipo1, ganador, inicio.plusDays(6), Partido.ELIMINATORIO, "Final"); 
 			}
 		} else if (actual == 7) {
-			partido=elFinal;
-			partido.jugar(esVisible);
+			elFinal.jugar(esVisible);
 			JOptionPane.showMessageDialog(null, mostrarResultadosFinal(), "Resultados del Campionate",1);
-		} else {
-			partido=null;
 		}
 		actual++;
-		return partido;
 	}
 
 	public String mostrarEquiposCuartosDeFinal () {
@@ -230,3 +224,4 @@ public class Campeonate {
 
 	
 }
+
