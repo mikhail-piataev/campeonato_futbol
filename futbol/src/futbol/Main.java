@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		String[] mainMenu = {"Campeonato", "Partido amistiso", "Agregar equipo", "Eliminar equipo", "Agregar jugador", 
 				"Eliminar jugador", "Salir"};
-		Liga liga = Liga.crearRandom("Agrentina jóvenes", 8);
+		Liga liga = Liga.crearRandom("Agrentina jóvenes", 10);
 		Partido partido;
 		boolean salir = false;
 		do {
@@ -23,9 +23,7 @@ public class Main {
 				campeonato.ordenarAlAzar();
 				do {
 			      partido = campeonato.getSiguiente();
-			      // сюда можно добавить функцию, например, totalizador.apostar(partido), которая будет предлагать сделать ставку  
 				  campeonato.jugarSiguiente(); 
-				  // а сюда, например, totalizador.resultadoApuesta(partido), которая выдаст результат ставки 
 				  if (partido != null) {
 					  liga.agregarPartido(partido);
 				  }

@@ -48,11 +48,7 @@ public class Jugador extends Persona{
     }
 	
 	public void setRating(int rating) {
-        if (rating >= 0 && rating <= 100) {
             this.rating = rating;
-        } else {
-            throw new IllegalArgumentException("Рейтинг должен быть в диапазоне от 0 до 100");
-        }
     }
 	
 	@Override

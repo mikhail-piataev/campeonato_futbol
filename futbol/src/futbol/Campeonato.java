@@ -115,7 +115,7 @@ public class Campeonato {
 	}
 	
 	public void ordenarAlAzar() {
-		if (equipos.size() < 8) {
+		if (equipos == null || equipos.size() < 8) {
 			JOptionPane.showMessageDialog(null, "Faltan equipos. No es posible organizar el campeonato");
 		} else {
 			int[] numeros = getOchoNumeros(equipos.size());
