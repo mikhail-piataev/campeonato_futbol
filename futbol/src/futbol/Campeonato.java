@@ -139,9 +139,7 @@ public class Campeonato {
 		}
 	}
 
-	
-	public void jugarSiguiente() {
-		Equipo ganador;
+	public void mostrarJuegos() {
 		switch (actual) {
 		case 1: 
 			JOptionPane.showMessageDialog(null, mostrarEquiposCuartosDeFinal(), "Cuatros de finales", 1);
@@ -155,6 +153,11 @@ public class Campeonato {
 			JOptionPane.showMessageDialog(null, mostrarEquiposFinal(), "Final",1);
 			break;
 		}
+	}
+	
+	
+	public void jugarSiguiente() {
+		Equipo ganador;
 		if (actual <= 4) {
 			cuartosDeFinal[actual-1].jugar(esVisible);
 			ganador = cuartosDeFinal[actual-1].getGanador();

@@ -11,6 +11,7 @@ public class Main {
 				"Eliminar jugador", "Salir"};
 		Liga liga = Liga.crearRandom("Agrentina jóvenes", 10);
 		Partido partido;
+		Apuesta apuesta;
 		boolean salir = false;
 		do {
 			int acion=JOptionPane.showOptionDialog(null, "Por favor, elegí una opción", "Bienvenida a liga \"" 
@@ -23,8 +24,12 @@ public class Main {
 				campeonato.ordenarAlAzar();
 				do {
 			      partido = campeonato.getSiguiente();
-				  campeonato.jugarSiguiente(); 
-				  if (partido != null) {
+			      if (partido != null) {
+				      campeonato.mostrarJuegos();
+				      apuesta = new Apuesta(partido);
+				      apuesta.apostar();
+					  campeonato.jugarSiguiente();
+					  apuesta.verificar();
 					  liga.agregarPartido(partido);
 				  }
 				} while (partido != null);

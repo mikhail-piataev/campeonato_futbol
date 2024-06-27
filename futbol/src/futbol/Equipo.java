@@ -178,6 +178,10 @@ public class Equipo {
 	    }
 	}
     
+	public int getRating() {
+		return calcularPromedioRating();
+	}
+	
 	public int calcularPromedioRating() {
         double totalRating = 0;
         for (Jugador jugador : jugadores) {
