@@ -7,28 +7,35 @@ import javax.swing.JOptionPane;
 public class Equipo {
 	private String nombre;
 	private String ciudad;
-	private LinkedList<Jugador> jugadores;
-	private int rating;
-	
-	private static String[] nombres = {"Rayos del Horizonte", "Titanes de la Ciudad", "Águilas Doradas", 
-			"Centauros del Valle", "Lobos del Sur", "Dragones de Fuego", "Centinelas del Abismo", 
-			"Tormenta FC", "Trueno Azul", "Cazadores del Norte", "Fénix FC", "Espectros del Crepúsculo", 
-			"Estrellas del Ocaso", "Guerreros del Viento", "Leones del Desierto", "Imperio Rojo", 
-			"Quimeras FC", "Espectros del Bosque", "Centellas del Este", "Soles del Mediodía"};
-	
-	private static String[] ciudades = {"Buenos Aires", "Córdoba", "Rosario", "Mar del Plata", 
-			"San Miguel de Tucumán", "Salta", "Santa Fe", "Corrientes", "Bahía Blanca", 
-			"Resistencia", "Posadas", "Merlo", "Quilmes", "San Salvador de Jujuy", "Guaymallén", 
-			"Santiago del Estero", "Gregorio de Laferrere", "José C. Paz", "Paraná", "Banfield", 
-			"González Catán", "Neuquén", "Formosa", "Lanús", "La Plata", "Godoy Cruz", 
-			"Isidro Casanova", "Las Heras", "Berazategui", "La Rioja"};
+	private String imagen;
 
-	public Equipo(String nombre, String ciudad) {
+	private LinkedList<Jugador> jugadores;
+	
+	private static String[] nombres = {"Talleres de Córdoba", "Huracán", "Unión", "Racing Club",
+			"Gimnasia La Plata", "Instituto", "River Plate", "Argentinos Juniors", "Lanús", "Belgrano", 
+			"Boca Juniors", "Sarmiento"};
+	
+	private static String[] imagenes = {"01talleres.jpg", "02huracan.jpg", "03union-santa-fe.jpg", 
+			"04racing-club.jpg", "05gimnasia-la-plata.jpg", "06instituto.jpg", "07river-plate.jpg", 
+			"08argentinos-juniors.jpg", "09lanus.jpg", "10belgrano.jpg", "11boca-juniors.jpg", "12sarmiento.jpg"};
+	
+	private static String[] ciudades = {"Córdoba", "Buenos Aires", "Santa Fe", "Avellaneda", "La Plata", "Córdoba", 
+			"Buenos Aires", "Buenos Aires", "Lanús", "Córdoba", "Buenos Aires", "Junín"};
+
+	public Equipo(String nombre, String ciudad, String imagen) {
 		this.nombre = nombre;
 		this.ciudad = ciudad;
+		this.imagen = imagen;
 		this.jugadores = new LinkedList<Jugador>();
 	}
+	
+	public String getImagen() {
+		return imagen;
+	}
 
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -91,18 +98,29 @@ public class Equipo {
 	public static Equipo crearRandom() {
 		int numeroNombre = (int)(Math.random()*(nombres.length));
 		int numeroCiudad = (int)(Math.random()*(ciudades.length));
-		Equipo equipo = new Equipo(nombres[numeroNombre], ciudades[numeroCiudad]);
-		int numeroJugadores = (int)(Math.random()*(10)+5);
+		int numeroImagen = (int)(Math.random()*(imagenes.length));
+		Equipo equipo = new Equipo(nombres[numeroNombre], ciudades[numeroCiudad], imagenes[numeroImagen]);
+		int numeroJugadores = (int)(Math.random()*10+11);
 		for (int i=0; i<numeroJugadores; i++) {
 			equipo.agregarJugador(Jugador.crearRandom(i+1));
 		}
 		return equipo;
     }
 
+	public static Equipo crearRegular(int numero) {
+		Equipo equipo = new Equipo(nombres[numero], ciudades[numero], imagenes[numero]);
+		int numeroJugadores = (int)(Math.random()*10+11);
+		for (int i=0; i<numeroJugadores; i++) {
+			equipo.agregarJugador(Jugador.crearRandom(i+1));
+		}
+		return equipo;
+    }
+	
+	
 	public static Equipo crearManualmante() {
 		String nombre = JOptionPane.showInputDialog(null, "Ingrese el nombre de equipo ");
 		String ciudad = JOptionPane.showInputDialog(null, "Ingrese la ciudad de equipo ");
-		return new Equipo(nombre,ciudad);
+		return new Equipo(nombre,ciudad, imagenes[0]);
     }
 	
 	public String mostrarBasic() {
@@ -191,7 +209,7 @@ public class Equipo {
     }
     
     private void actualizarRatingEquipo() {
-        rating=calcularPromedioRating();
+       // rating=calcularPromedioRating();
     }
 	
 }

@@ -82,6 +82,15 @@ public class Liga {
 		return liga;
     }
 	
+	public static Liga crearRegular(String nombre, int cantidadEquipos) {
+		Liga liga = new Liga(nombre);
+		for (int i=0; i<cantidadEquipos; i++) { 
+			Equipo equipo=Equipo.crearRegular(i);
+			liga.agregarEquipo(equipo);
+		}
+		return liga;
+    }
+	
 	public String[] toArrayString() {
 		if (equipos.isEmpty()) {
 			return null; 

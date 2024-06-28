@@ -53,7 +53,7 @@ public class Jugador extends Persona{
 	
 	@Override
 	public String toString() {
-		return numeroCamiseta + ". " + super.toString() + " - " + posicion;
+		return numeroCamiseta + ". " + super.toString() + " [" + rating + "]  - " + posicion;
 	}
 
 	public static Jugador crearRandom(int numeroCamiseta) {

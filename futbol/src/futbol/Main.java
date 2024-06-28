@@ -7,9 +7,10 @@ import javax.swing.JOptionPane;
 public class Main {
 
 	public static void main(String[] args) {
-		String[] mainMenu = {"Campeonato", "Partido amistiso", "Agregar equipo", "Eliminar equipo", "Agregar jugador", 
+		String[] mainMenu = {"Campeonato", "Partido amistoso", "Agregar equipo", "Eliminar equipo", "Agregar jugador", 
 				"Eliminar jugador", "Salir"};
-		Liga liga = Liga.crearRandom("Agrentina jóvenes", 10);
+		Liga liga = Liga.crearRegular("Agrentina jóvenes", 10);
+		Sportbook sportbook = new Sportbook("Betano");
 		Partido partido;
 		Apuesta apuesta;
 		boolean salir = false;
@@ -31,6 +32,7 @@ public class Main {
 					  campeonato.jugarSiguiente();
 					  apuesta.verificar();
 					  liga.agregarPartido(partido);
+					  sportbook.agregarApuesta(apuesta);
 				  }
 				} while (partido != null);
 				break;
@@ -42,9 +44,12 @@ public class Main {
 						"Un equipo rival para " + primero, 1, null, nombresEquipos, nombresEquipos[0]);
 				partido = new Partido(liga.encontrarEquipo(primero), liga.encontrarEquipo(segundo), 
 						LocalDate.now().plusDays(liga.getNumeroPartidos()));
+				apuesta = new Apuesta(partido);
+				apuesta.apostar();
 				partido.jugar(true);
-				JOptionPane.showMessageDialog(null, partido.mostrarResultado());
+				apuesta.verificar();
 				liga.agregarPartido(partido);
+				sportbook.agregarApuesta(apuesta);
 				break;
 			case 2:
 				JOptionPane.showMessageDialog(null, liga.mostrarEquipos() + "\nVamos a agregar una más.");
@@ -76,7 +81,8 @@ public class Main {
 				break;
 			}	
 		} while (! salir);
-		JOptionPane.showMessageDialog(null,liga.mostrarResultados()+"¡Chao! ¡Nos vemos!","Informe final", 1);
+		JOptionPane.showMessageDialog(null,liga.mostrarResultados(),"Informe final de juegos", 1);
+		JOptionPane.showMessageDialog(null,sportbook.mostrarInforme()+"\n\n¡Chao! ¡Nos vemos!","Informe final de apuestos", 1);
 	}
 	
 	private static String[] eliminarDeArray(String[] todos, String excesivo) {

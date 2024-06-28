@@ -4,15 +4,13 @@ import javax.swing.JOptionPane;
 
 public class Apuesta {
 	private double montoApostado;
-	private double montoGanado;
 	private Partido partido;
 	private int numeroEquipo;
 	
 	public Apuesta(Partido partido) {
 		this.partido = partido;
 		this.montoApostado = 0;
-		this.montoGanado = 0;		
-		numeroEquipo = 0;
+		numeroEquipo = -1;
 	}
 	
 	public Partido getPartido() {
@@ -22,53 +20,117 @@ public class Apuesta {
 		this.partido = partido;
 	}
 	
-	public double getRatio1() {
+	public double getProbabilidadGano1() {
 		double r1 = partido.getEquipo1().getRating();
 		double r2 = partido.getEquipo2().getRating();
-		return 2*r2/(r1+r2);
+		return r1/(r1+r2)*(1-getProbabilidadEmpate());
 	}   
 
-	public double getRatio2() {
+	public double getProbabilidadGano2() {
 		double r1 = partido.getEquipo1().getRating();
 		double r2 = partido.getEquipo2().getRating();
-		return 2*r1/(r1+r2);
+		return r2/(r1+r2)*(1-getProbabilidadEmpate());
 	}   
 
+		public double getProbabilidadEmpate() {
+		if (partido.getTipo() == Partido.ELIMINATORIO) {
+			return 0;
+		}
+		return 0.25; // No es verdad, pero la verdad es muy complejo.
+	}   
 
 	public void solicitarMonto() {
 		montoApostado = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrese la cantidad de pesos para auesta"));
 	}
 	
 	public void apostar() {
-		String[] opciones = {partido.getEquipo1().getNombre(), partido.getEquipo2().getNombre(), "Saltar"};
 		String aviso = partido.mostrarFaseFechaYEquipos();
-		aviso += "\n\nSi gana " + partido.getEquipo1().getNombre() + " recibirás " +String.format("%.0f", 100*getRatio1())+ "% de tu apuesta.";
-		aviso += "\nSi gana " + partido.getEquipo2().getNombre() + " recibirás " +String.format("%.0f", 100*getRatio2())+ "% de tu apuesta.";
-		aviso +="\n\nSi querés hacer apusta, elegí un equipo";
-		int opcionElegido=JOptionPane.showOptionDialog(null, aviso, "Apuestas",	0, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-		if (opcionElegido == 2) {
-			numeroEquipo=0; 
-		} else {
-			numeroEquipo = opcionElegido+1;
-			solicitarMonto();
+		aviso += "\n\nSi apostás al " + partido.getEquipo1().getNombre() + " y ganás recibirás " 
+				+ String.format("%.0f", 100*(1/getProbabilidadGano1()-1)) + "% de tu apuesta.";
+		aviso += "\n\nSi apostás al  " + partido.getEquipo2().getNombre() + " y ganás recibirás "
+				+ String.format("%.0f", 100*(1/getProbabilidadGano2()-1)) + "% de tu apuesta.";
+		if (partido.getTipo() == Partido.REGULAR) {
+			aviso += "\n\nSi apostás al empate y ganás recibirás "
+					+ String.format("%.0f", 100*(1/getProbabilidadEmpate()-1)) + "% de tu apuesta.";
 		}
-		
+		aviso +="\n\nElegí una opcion\n";
+		if (partido.getTipo() == Partido.ELIMINATORIO) {
+			String[] opciones = {partido.getEquipo1().getNombre(), partido.getEquipo2().getNombre(), "Saltar"};
+			int opcionElegido=JOptionPane.showOptionDialog(null, aviso, "Apuestas",	0, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+			if (opcionElegido == 2) {
+				numeroEquipo=-1; 
+			} else {
+				numeroEquipo = opcionElegido+1;
+				solicitarMonto();
+			}
+		} else {
+			String[] opciones = {partido.getEquipo1().getNombre(), partido.getEquipo2().getNombre(), "Empate", "Saltar"};
+			int opcionElegido=JOptionPane.showOptionDialog(null, aviso, "Apuestas",	0, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+			if (opcionElegido == 3) {
+				numeroEquipo=-1; 
+			} else if (opcionElegido == 2){
+				numeroEquipo = 0;
+				solicitarMonto();
+			} else {
+				numeroEquipo = opcionElegido+1;
+				solicitarMonto();
+			}
+		}
 	}
-
 	
 	public void verificar() {
-		if (numeroEquipo != 0) {
+		if (numeroEquipo >= 0) {
+			JOptionPane.showMessageDialog(null, mostrarInforme(), "Informe de apuestas", 1);
+		}
+	}
+
+	public double getMontoGanado() {
+		double montoGanado=0;
+	    if (numeroEquipo >= 0) {
 			if (numeroEquipo == 1 && partido.getGanador() == partido.getEquipo1()) {
-				montoGanado = montoApostado*getRatio1();
-				JOptionPane.showMessageDialog(null, "Ganaste $" + String.format("%.0f", montoGanado));
+				montoGanado = montoApostado*(1/getProbabilidadGano1()-1);
 			} else if (numeroEquipo == 2 && partido.getGanador() == partido.getEquipo2()) {
-				montoGanado = montoApostado*getRatio1();
-				JOptionPane.showMessageDialog(null, "Ganaste $" + String.format("%.0f", montoGanado));
+				montoGanado = montoApostado*(1/getProbabilidadGano2()-1);
+			} else if (numeroEquipo == 0 && partido.getGanador() == null){
+				montoGanado = montoApostado*(1/getProbabilidadEmpate()-1);
 			} else {
 				montoGanado = - montoApostado;
-				JOptionPane.showMessageDialog(null, "Perdiste $" + String.format("%.0f", -montoGanado));
 			}
-			
 		}
+		return montoGanado;
+	}
+	
+	public Equipo getEquipoApuesta() {
+		Equipo equipoApuesta = null; 
+		if (numeroEquipo == 1) {
+			equipoApuesta = partido.getEquipo1();
+		} else if (numeroEquipo == 2) {
+			equipoApuesta = partido.getEquipo2();
+		}
+		return equipoApuesta;
+	}
+	
+	public String mostrarInforme() {
+		String informe = partido.mostrarFaseFechaYEquipos();
+        if (numeroEquipo < 0) {
+        	return informe + "\nNo apostaste en este partido";
+        }
+		if (partido.getTipo() == Partido.REGULAR && numeroEquipo == 0) {
+			informe += "\nApostaste al Empate";	
+		} else {
+			informe += "\nApostaste al " + getEquipoApuesta().getNombre();
+		}
+		if (partido.getTipo() == Partido.REGULAR && partido.getGanador() == null) {
+			informe += "\nEl partido acabó en empate";
+		} else {
+			informe += "\nGanó " + partido.getGanador().getNombre();
+		}
+		double montoGanado=getMontoGanado();
+		if (montoGanado >= 0) {
+			informe += "\nGanaste $" + String.format("%.0f", montoGanado);
+		} else {
+			informe += "\nPerdiste $" + String.format("%.0f", -montoGanado);
+		}
+		return informe;
 	}
 }
