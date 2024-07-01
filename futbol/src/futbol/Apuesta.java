@@ -40,7 +40,16 @@ public class Apuesta {
 	}   
 
 	public void solicitarMonto() {
-		montoApostado = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrese la cantidad de pesos para auesta"));
+		boolean error;
+		do {
+			error=false;
+		try {
+			montoApostado = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrese la cantidad de pesos para auesta"));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,"No es numero. Por favor, ingrese un numero.", null, 0);
+			error=true; 
+		}
+		} while (error); 
 	}
 	
 	public void apostar() {
@@ -113,23 +122,23 @@ public class Apuesta {
 	public String mostrarInforme() {
 		String informe = partido.mostrarFaseFechaYEquipos();
         if (numeroEquipo < 0) {
-        	return informe + "\nNo apostaste en este partido";
+        	return informe + "\nNo apostaste en este partido.";
         }
 		if (partido.getTipo() == Partido.REGULAR && numeroEquipo == 0) {
-			informe += "\nApostaste al Empate";	
+			informe += "\nApostaste al Empate.";	
 		} else {
-			informe += "\nApostaste al " + getEquipoApuesta().getNombre();
+			informe += "\nApostaste al " + getEquipoApuesta().getNombre()+".";
 		}
 		if (partido.getTipo() == Partido.REGULAR && partido.getGanador() == null) {
-			informe += "\nEl partido acabó en empate";
+			informe += " El partido acabó en empate.";
 		} else {
-			informe += "\nGanó " + partido.getGanador().getNombre();
+			informe += " Ganó " + partido.getGanador().getNombre()+".";
 		}
 		double montoGanado=getMontoGanado();
 		if (montoGanado >= 0) {
-			informe += "\nGanaste $" + String.format("%.0f", montoGanado);
+			informe += " Ganaste $" + String.format("%.0f", montoGanado)+".";
 		} else {
-			informe += "\nPerdiste $" + String.format("%.0f", -montoGanado);
+			informe += " Perdiste $" + String.format("%.0f", -montoGanado)+".";
 		}
 		return informe;
 	}
